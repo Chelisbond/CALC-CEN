@@ -60,13 +60,5 @@
   <button onclick="guardarTicket()">Guardar ticket</button>
 
   <script src="script.js"></script>
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js')
-      .then(reg => console.log('Service Worker registrado ✅'))
-      .catch(err => console.error('Error registrando SW:', err));
-  }
-</script>
-
 </body>
 </html>
