@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CENADURÍA LAS COMADRES</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="images/icon-192.png">
+
+</head>
+<body>
+  <h2>CENADURÍA<br>LAS COMADRES</h2>
+
+  <img src="images/Becky_and_mother.jpg" alt="Logo de la cenaduría">
+
+  <label for="pozole_gde">Pozole Gde ($70):</label>
+  <input type="number" id="pozole_gde" min="0">
+  
+  <label for="pozole_ltr">Pozole Litro ($70):</label>
+  <input type="number" id="pozole_ltr" min="0">
+    
+  <label for="pozole_chico">Pozole Chico ($50):</label>
+  <input type="number" id="pozole_chico" min="0">
+  
+  <label for="quesa_con">Quesadillas con carne ($40):</label>
+  <input type="number" id="quesa_con" min="0">
+   
+  <label for="quesa_sin">Quesadillas sin carne ($30):</label>
+  <input type="number" id="quesa_sin" min="0">
+  
+  <label for="sopes_con">Sopes con carne ($20):</label>
+  <input type="number" id="sopes_con" min="0">
+  
+  <label for="sopes_sin">Sopes sin carne ($15):</label>
+  <input type="number" id="sopes_sin" min="0">
+
+  <label for="tacos_dor_con">Tacos dorados con carne ($15):</label>
+  <input type="number" id="tacos_dor_con" min="0">
+  
+  <label for="tacos_dor_sin">Tacos dorados sin carne ($12):</label>
+  <input type="number" id="tacos_dor_sin" min="0">
+  
+  <label for="aguas">Aguas frescas ($15):</label>
+  <input type="number" id="aguas" min="0">
+
+  <label for="soda">Refresco ($20):</label>
+  <input type="number" id="soda" min="0">
+
+  <label for="gela">Gelatina ($10):</label>
+  <input type="number" id="gela" min="0">
+
+  <button onclick="calcular()">Calcular total y generar ticket</button>
+  <button onclick="limpiarCampos()">Limpiar campos</button>
+
+  <h3>Total: $<span id="total">0.00</span></h3>
+
+  <h4>Ticket:</h4>
+  <pre id="ticket"></pre>
+  <button onclick="guardarTicket()">Guardar ticket</button>
+
+  <script src="script.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(reg => console.log('Service Worker registrado ✅'))
+      .catch(err => console.error('Error registrando SW:', err));
+  }
+</script>
+
+</body>
+</html>
