@@ -80,23 +80,6 @@ function guardarTicket() {
   .then(data => console.log(data.mensaje))
   .catch(error => console.error("❌ Error al guardar en la nube:", error));
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-}
 function limpiarCampos() {
   const inputs = document.querySelectorAll('input[type="number"]');
   inputs.forEach(input => input.value = '');
