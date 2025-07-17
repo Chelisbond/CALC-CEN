@@ -86,8 +86,7 @@ const total = totalMatch ? parseFloat(totalMatch[0].replace(",", "")) : 0;
   .then(response => response.json())
   .then(data => console.log(data.mensaje))
   .catch(error => console.error("Error al guardar en hoja de cálculo:", error));
-}*/
-
+}
 
 
 
@@ -108,7 +107,8 @@ function guardarTicket() {
   const folio = generarFolio();
   link.download = ticket_${folio}.txt;
   link.click();
-  URL.revokeObjectURL(url);
+  URL.revokeObjectURL(url);*/
+
 
   // 👉 Llamada para guardar en la nube
   console.log("TOTAL EXTRAIDO:", Total);
