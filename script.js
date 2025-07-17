@@ -52,7 +52,11 @@ const productos = [
 
 
 function guardarTicket() {
-  if (!ultimoTicket) {
+  const totalTexto = document.getElementById("totalFinal").textContent.trim();
+const totalMatch = totalTexto.match(/[\d.,]+/);
+const total = totalMatch ? parseFloat(totalMatch[0].replace(",", "")) : 0;
+}
+/*  if (!ultimoTicket) {
     alert("Primero genera un ticket.");
     return;
   }
@@ -82,7 +86,7 @@ function guardarTicket() {
   .then(response => response.json())
   .then(data => console.log(data.mensaje))
   .catch(error => console.error("Error al guardar en hoja de cálculo:", error));
-}
+}*/
 
 
 
