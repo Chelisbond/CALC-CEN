@@ -46,91 +46,52 @@ const productos = [
   document.getElementById("ticket").textContent = ticket;
   ultimoTicket = ticket;
 }
+<script>
+  let ultimoTicket = "";
+  let totalCalculado = 0;
 
+  function generarTicket() {
+    const val1 = parseFloat(document.getElementById("producto1").value) || 0;
+    const val2 = parseFloat(document.getElementById("producto2").value) || 0;
+    const val3 = parseFloat(document.getElementById("producto3").value) || 0;
 
+    totalCalculado = val1 + val2 + val3;
+    document.getElementById("totalFinal").textContent = $${totalCalculado.toFixed(2)};
 
-
-
-function guardarTicket() {
-  const totalTexto = document.getElementById("totalFinal").textContent.trim();
-const totalMatch = totalTexto.match(/[\d.,]+/);
-const total = totalMatch ? parseFloat(totalMatch[0].replace(",", "")) : 0;
-}
-/*  if (!ultimoTicket) {
-    alert("Primero genera un ticket.");
-    return;
+    const fecha = new Date().toLocaleString();
+    ultimoTicket = Fecha: ${fecha}\nTotal: $${totalCalculado.toFixed(2)};
   }
 
-  // Guardar ticket como archivo (opcional)
-  const blob = new Blob([ultimoTicket], { type: "text/plain;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  const folio = generarFolio();
-  link.download = 'ticket_${folio}.txt';
-  link.click();
-  URL.revokeObjectURL(url);
-
-  // EXTRAER TOTAL
-  const totalTexto = document.getElementById("totalFinal").textContent;
-  const total = parseFloat(totalTexto.replace("$", ""));
-
-  // ENVIAR A GOOGLE SHEETS
-  fetch("https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbwcRk7mQBwhx4EZwmx9N-LuVkMVw8A4lglaWtiu75QJ_goO7qjOXG30jHaqpWVahPibOQ/exec", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ total: total })
-  })
-  .then(response => response.json())
-  .then(data => console.log(data.mensaje))
-  .catch(error => console.error("Error al guardar en hoja de cálculo:", error));
-}
-
-
-
-
-
-function guardarTicket() {
-  if (!ultimoTicket) {
-    alert("Primero genera un ticket.");
-    return;
+  function limpiarCampos() {
+    document.getElementById("producto1").value = "";
+    document.getElementById("producto2").value = "";
+    document.getElementById("producto3").value = "";
+    document.getElementById("totalFinal").textContent = "$0.00";
+    ultimoTicket = "";
   }
 
-  const total = calcularTotalDelTicket(); // O usa tu lógica actual para obtener el total
+  function guardarTicket() {
+    if (!ultimoTicket) {
+      alert("Primero genera un ticket.");
+      return;
+    }
 
-  const blob = new Blob([ultimoTicket], { type: "text/plain;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  const folio = generarFolio();
-  link.download = ticket_${folio}.txt;
-  link.click();
-  URL.revokeObjectURL(url);*/
+    const fecha = new Date().toLocaleString();
+    const totalTexto = $${totalCalculado.toFixed(2)};
 
+    // Guardar en hoja de cálculo
+    google.script.run
+      .withSuccessHandler(() => alert("Ticket guardado en Google Sheets"))
+      .guardarEnHoja(fecha, totalTexto);
 
-  // 👉 Llamada para guardar en la nube
-  console.log("TOTAL EXTRAIDO:", Total);
-  
-  fetch("https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbwcRk7mQBwhx4EZwmx9N-LuVkMVw8A4lglaWtiu75QJ_goO7qjOXG30jHaqpWVahPibOQ/exec", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ total: 100 }) // Puedes agregar más campos si los quieres luego
-  })
-  .then(response => response.json())
-  .then(data => console.log(data.mensaje))
-  .catch(error => console.error("❌ Error al guardar en la nube:", error));
-}
-function limpiarCampos() {
-  const inputs = document.querySelectorAll('input[type="number"]');
-  inputs.forEach(input => input.value = '');
-
-  document.getElementById("total").textContent = "0.00";
-  document.getElementById("ticket").textContent = "";
-  ultimoTicket = "";
-
-  document.getElementById("pozole_gde").focus();
-}
+    // Guardar archivo local
+    const blob = new Blob([ultimoTicket], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    const folio = new Date().getTime();
+    link.download = ticket_${folio}.txt;
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+</script>
