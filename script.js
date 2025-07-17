@@ -25,9 +25,6 @@ const productos = [
     { nombre: "Refresco", precio: 20, cantidad: parseInt(document.getElementById("soda").value) || 0 },
     { nombre: "Gelatina", precio: 10, cantidad: parseInt(document.getElementById("gela").value) || 0 },
   ];
-
-
-
   let total = 0;
   const folio = generarFolio();
   const fecha = new Date().toLocaleString('es-MX');
@@ -41,7 +38,6 @@ const productos = [
       ticket += `${p.nombre} (${p.cantidad} x $${p.precio}): $${subtotal}\n`;
     }
   });
-
   ticket += "------------------------------\n";
   ticket += `TOTAL: $${total.toFixed(2)} MXN\n`;
   ticket += "Gracias por su compra.";
@@ -50,6 +46,48 @@ const productos = [
   document.getElementById("ticket").textContent = ticket;
   ultimoTicket = ticket;
 }
+
+
+
+
+
+function guardarTicket() {
+  if (!ultimoTicket) {
+    alert("Primero genera un ticket.");
+    return;
+  }
+
+  // Guardar ticket como archivo (opcional)
+  const blob = new Blob([ultimoTicket], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  const folio = generarFolio();
+  link.download = 'ticket_${folio}.txt';
+  link.click();
+  URL.revokeObjectURL(url);
+
+  // EXTRAER TOTAL
+  const totalTexto = document.getElementById("totalFinal").textContent;
+  const total = parseFloat(totalTexto.replace("$", ""));
+
+  // ENVIAR A GOOGLE SHEETS
+  fetch("https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbwcRk7mQBwhx4EZwmx9N-LuVkMVw8A4lglaWtiu75QJ_goO7qjOXG30jHaqpWVahPibOQ/exec", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ total: total })
+  })
+  .then(response => response.json())
+  .then(data => console.log(data.mensaje))
+  .catch(error => console.error("Error al guardar en hoja de cálculo:", error));
+}
+
+
+
+
+
 
 function guardarTicket() {
   if (!ultimoTicket) {
