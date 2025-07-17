@@ -1,97 +1,44 @@
-function generarFolio() {
-  const now = new Date();
-  return 'F' + now.getFullYear() +
-         (now.getMonth() + 1).toString().padStart(2, '0') +
-         now.getDate().toString().padStart(2, '0') +
-         now.getHours().toString().padStart(2, '0') +
-         now.getMinutes().toString().padStart(2, '0') +
-         now.getSeconds().toString().padStart(2, '0');
-}
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      input[type="number"] {
+        width: 60px;
+        margin: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Ticket de Cenaduría</h2>
 
-let ultimoTicket = '';
+    <label>Platillo 1: $<input type="number" id="p1" value="0"></label><br>
+    <label>Platillo 2: $<input type="number" id="p2" value="0"></label><br>
+    <label>Platillo 3: $<input type="number" id="p3" value="0"></label><br><br>
 
-function calcular() {
-const productos = [
-    { nombre: "Pozole Gde", precio: 70, cantidad: parseInt(document.getElementById("pozole_gde").value) || 0 },
-    { nombre: "Pozole litro", precio: 50, cantidad: parseInt(document.getElementById("pozole_ltr").value) || 0 },  
-    { nombre: "Pozole Chico", precio: 50, cantidad: parseInt(document.getElementById("pozole_chico").value) || 0 },
-    { nombre: "Quesadilla con carne", precio: 40, cantidad: parseInt(document.getElementById("quesa_con").value) || 0 },
-    { nombre: "Quesadilla sin carne", precio: 30, cantidad: parseInt(document.getElementById("quesa_sin").value) || 0 },  
-    { nombre: "Sopes con carne", precio: 20, cantidad: parseInt(document.getElementById("sopes_con").value) || 0 },
-    { nombre: "Sopes sin carne", precio: 15, cantidad: parseInt(document.getElementById("sopes_sin").value) || 0 },  
-   { nombre: "Tacos dorados con carne", precio: 15, cantidad: parseInt(document.getElementById("tacos_dor_con").value) || 0 },
-   { nombre: "Tacos dorados sin carne", precio: 12, cantidad: parseInt(document.getElementById("tacos_dor_sin").value) || 0 },
-    { nombre: "Aguas frescas", precio: 15, cantidad: parseInt(document.getElementById("aguas").value) || 0 },
-    { nombre: "Refresco", precio: 20, cantidad: parseInt(document.getElementById("soda").value) || 0 },
-    { nombre: "Gelatina", precio: 10, cantidad: parseInt(document.getElementById("gela").value) || 0 },
-  ];
-  let total = 0;
-  const folio = generarFolio();
-  const fecha = new Date().toLocaleString('es-MX');
+    <button onclick="calcularTotal()">Calcular total</button>
+    <button onclick="guardarTicket()">Guardar ticket</button><br><br>
 
-  let ticket = `===== TICKET DE CENADURÍA =====\nFolio: ${folio}\nFecha: ${fecha}\n\n`;
+    <strong>Total: $<span id="total">0</span></strong>
 
-  productos.forEach(p => {
-    if (p.cantidad > 0) {
-      let subtotal = p.precio * p.cantidad;
-      total += subtotal;
-      ticket += `${p.nombre} (${p.cantidad} x $${p.precio}): $${subtotal}\n`;
-    }
-  });
-  ticket += "------------------------------\n";
-  ticket += `TOTAL: $${total.toFixed(2)} MXN\n`;
-  ticket += "Gracias por su compra.";
+    <script>
+      function calcularTotal() {
+        const p1 = parseFloat(document.getElementById("p1").value) || 0;
+        const p2 = parseFloat(document.getElementById("p2").value) || 0;
+        const p3 = parseFloat(document.getElementById("p3").value) || 0;
 
-  document.getElementById("total").textContent = total.toFixed(2);
-  document.getElementById("ticket").textContent = ticket;
-  ultimoTicket = ticket;
-}
-<script>
-  let ultimoTicket = "";
-  let totalCalculado = 0;
+        const total = p1 + p2 + p3;
+        document.getElementById("total").textContent = total.toFixed(2);
+      }
 
-  function generarTicket() {
-    const val1 = parseFloat(document.getElementById("producto1").value) || 0;
-    const val2 = parseFloat(document.getElementById("producto2").value) || 0;
-    const val3 = parseFloat(document.getElementById("producto3").value) || 0;
+      function guardarTicket() {
+        const total = document.getElementById('total').textContent;
 
-    totalCalculado = val1 + val2 + val3;
-    document.getElementById("totalFinal").textContent = $${totalCalculado.toFixed(2)};
-
-    const fecha = new Date().toLocaleString();
-    ultimoTicket = Fecha: ${fecha}\nTotal: $${totalCalculado.toFixed(2)};
-  }
-
-  function limpiarCampos() {
-    document.getElementById("producto1").value = "";
-    document.getElementById("producto2").value = "";
-    document.getElementById("producto3").value = "";
-    document.getElementById("totalFinal").textContent = "$0.00";
-    ultimoTicket = "";
-  }
-
-  function guardarTicket() {
-    if (!ultimoTicket) {
-      alert("Primero genera un ticket.");
-      return;
-    }
-
-    const fecha = new Date().toLocaleString();
-    const totalTexto = $${totalCalculado.toFixed(2)};
-
-    // Guardar en hoja de cálculo
-    google.script.run
-      .withSuccessHandler(() => alert("Ticket guardado en Google Sheets"))
-      .guardarEnHoja(fecha, totalTexto);
-
-    // Guardar archivo local
-    const blob = new Blob([ultimoTicket], { type: "text/plain;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    const folio = new Date().getTime();
-    link.download = ticket_${folio}.txt;
-    link.click();
-    URL.revokeObjectURL(url);
-  }
-</script>
+        google.script.run
+          .withSuccessHandler(() => alert("✅ Ticket guardado correctamente"))
+          .withFailureHandler((error) => alert("❌ Error al guardar: " + error.message))
+          .guardarEnHoja({ total });
+      }
+    </script>
+  </body>
+</html>
