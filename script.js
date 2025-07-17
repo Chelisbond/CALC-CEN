@@ -56,14 +56,46 @@ function guardarTicket() {
     alert("Primero genera un ticket.");
     return;
   }
+
+  const total = calcularTotalDelTicket(); // O usa tu lógica actual para obtener el total
+
   const blob = new Blob([ultimoTicket], { type: "text/plain;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
   const folio = generarFolio();
-  link.download = `ticket_${folio}.txt`;
+  link.download = ticket_${folio}.txt;
   link.click();
   URL.revokeObjectURL(url);
+
+  // 👉 Llamada para guardar en la nube
+  fetch("https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbwcRk7mQBwhx4EZwmx9N-LuVkMVw8A4lglaWtiu75QJ_goO7qjOXG30jHaqpWVahPibOQ/exec", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ total: total }) // Puedes agregar más campos si los quieres luego
+  })
+  .then(response => response.json())
+  .then(data => console.log(data.mensaje))
+  .catch(error => console.error("❌ Error al guardar en la nube:", error));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 }
 function limpiarCampos() {
   const inputs = document.querySelectorAll('input[type="number"]');
