@@ -111,6 +111,8 @@ function guardarTicket() {
   URL.revokeObjectURL(url);
 
   // 👉 Llamada para guardar en la nube
+  console.log("TOTAL EXTRAIDO:", Total);
+  
   fetch("https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbwcRk7mQBwhx4EZwmx9N-LuVkMVw8A4lglaWtiu75QJ_goO7qjOXG30jHaqpWVahPibOQ/exec", {
     method: "POST",
     headers: {
