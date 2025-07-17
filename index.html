@@ -1,69 +1,44 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/png" href="images/icon-192.png">
-</head>
-<body>
-  <div style="max-width:720px; margin:auto; padding:20px">
-   <img src="images/logo_cenaduria.png" alt="Logo de la cenaduría">
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      input[type="number"] {
+        width: 60px;
+        margin: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Ticket de Cenaduría</h2>
 
-  <label for="pozole_gde">Pozole Gde ($70):</label>
-  <input type="number" id="pozole_gde" min="0">
-  
-  <label for="pozole_ltr">Pozole Litro ($70):</label>
-  <input type="number" id="pozole_ltr" min="0">
-    
-  <label for="pozole_chico">Pozole Chico ($50):</label>
-  <input type="number" id="pozole_chico" min="0">
-  
-  <label for="quesa_con">Quesadillas con carne ($40):</label>
-  <input type="number" id="quesa_con" min="0">
-   
-  <label for="quesa_sin">Quesadillas sin carne ($30):</label>
-  <input type="number" id="quesa_sin" min="0">
-  
-  <label for="sopes_con">Sopes con carne ($20):</label>
-  <input type="number" id="sopes_con" min="0">
-  
-  <label for="sopes_sin">Sopes sin carne ($15):</label>
-  <input type="number" id="sopes_sin" min="0">
+    <label>Platillo 1: $<input type="number" id="p1" value="0"></label><br>
+    <label>Platillo 2: $<input type="number" id="p2" value="0"></label><br>
+    <label>Platillo 3: $<input type="number" id="p3" value="0"></label><br><br>
 
-  <label for="tacos_dor_con">Tacos dorados con carne ($15):</label>
-  <input type="number" id="tacos_dor_con" min="0">
-  
-  <label for="tacos_dor_sin">Tacos dorados sin carne ($12):</label>
-  <input type="number" id="tacos_dor_sin" min="0">
-  
-  <label for="aguas">Aguas frescas ($15):</label>
-  <input type="number" id="aguas" min="0">
+    <button onclick="calcularTotal()">Calcular total</button>
+    <button onclick="guardarTicket()">Guardar ticket</button><br><br>
 
-  <label for="soda">Refresco ($20):</label>
-  <input type="number" id="soda" min="0">
+    <strong>Total: $<span id="total">0</span></strong>
 
-  <label for="gela">Gelatina ($10):</label>
-  <input type="number" id="gela" min="0">
+    <script>
+      function calcularTotal() {
+        const p1 = parseFloat(document.getElementById("p1").value) || 0;
+        const p2 = parseFloat(document.getElementById("p2").value) || 0;
+        const p3 = parseFloat(document.getElementById("p3").value) || 0;
 
-  <button onclick="calcular()">Calcular total y generar ticket</button>
-  <button onclick="limpiarCampos()">Limpiar campos</button>
+        const total = p1 + p2 + p3;
+        document.getElementById("total").textContent = total.toFixed(2);
+      }
 
-  <h3>Total: $<span id="total">$80.00</span></h3>
+      function guardarTicket() {
+        const total = document.getElementById('total').textContent;
 
-  <h4>Ticket:</h4>
-  <pre id="ticket"></pre>
-  <button onclick="guardarTicket()">Guardar ticket</button>
-
-  <script src="script.js"></script>
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js')
-      .then(reg => console.log('Service Worker registrado ✅'))
-      .catch(err => console.error('Error registrando SW:', err));
-  }
-</script>
-  </div>
-</body>
+        google.script.run
+          .withSuccessHandler(() => alert("✅ Ticket guardado correctamente"))
+          .withFailureHandler((error) => alert("❌ Error al guardar: " + error.message))
+          .guardarEnHoja({ total });
+      }
+    </script>
+  </body>
 </html>
