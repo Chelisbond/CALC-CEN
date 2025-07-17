@@ -74,7 +74,7 @@ function guardarTicket() {
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ total: total }) // Puedes agregar más campos si los quieres luego
+    body: JSON.stringify({ total: 100 }) // Puedes agregar más campos si los quieres luego
   })
   .then(response => response.json())
   .then(data => console.log(data.mensaje))
